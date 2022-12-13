@@ -21,11 +21,32 @@
 %Definición de filtro ideal
 %---------------------------------------------------------------------------
 %Realización del filtro pasa bajos
-M = 88576; %muestras para el filtro ideal
-Bw = 250*2; %ancho de banda
-unos = floor( M * Bw ) %definición de los unos
-if mod( unos, 2 ) == 0
-  filtro += 1;
-end
-ceros = M - unos;
-plot(s)
+M = 64; %muestras para el filtro ideal ; taps
+% fnormalizada = 500/8000 = 0.0625
+Bw = 0.0625*2; % 2xFrecuencia de corte normalizada a la frecuencia de muestreo
+N = length(s); %Número de muestras
+##duracion = length(s)/fs;
+t = linspace(0, duracion, length(s)); % tiempo lenght(s) = número de muestras
+##plot(s)
+title('Audio Domini_Fil en términos de muestras')
+
+espectroSenal = fftshift(fft(s)); %transformada del audio centrada
+
+f = linspace(-fs/2, fs/2, N); %ventana de Fourier que va de -4kHz a 4kHz con N muestras
+plot(f, abs(espectroSenal)/max(abs(espectroSenal)))
+grid on, grid minor;
+
+% Diseño del filtro ideal
+
+filtrolp = 1.*( abs(f) <= 250 );
+filtroInverso = fftshift(ifft(filtrolp));
+
+##figure();
+##plot(f, filtrolp, 'b')
+
+portadora = cos(750*2*pi*t);
+modulacion = filtroInverso .* portadora;
+
+filtroModulado = fftshift(fft(modulacion));
+figure();
+plot(t, filtroModulado)
