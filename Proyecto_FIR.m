@@ -52,7 +52,7 @@ desplazada = fft(modulate(h_n, 750, fs)) ;
 filtrado = desplazada .* S;
 
 % Recuperar sonido
-senalFiltrada = fftshift(ifft(filtrado));
+senalFiltrada = ifft(fftshift(filtrado));
 senalFiltrada = real(senalFiltrada);
 
 %% Graficación
@@ -98,7 +98,7 @@ sound(s,fs);
 pause(duracion + 1);
 
 % Sonido resultante
-sound(abs(senalFiltrada), fs);
+sound(senalFiltrada, fs);
 pause(duracion + 1);
 
 audiowrite("Domini_Fil - copia.wav",senalFiltrada,fs)
