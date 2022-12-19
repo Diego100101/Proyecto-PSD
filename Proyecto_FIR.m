@@ -96,11 +96,11 @@ figure(3);
 subplot(2,1,1);
 plot(fourier, senalFiltrada, 'g');
 title('Comparación');
-xlabel('Señal original')
+xlabel('Señal filtrada')
 grid on, grid minor;
 subplot(2,1,2);
 plot(s, 'g')
-xlabel('Señal filtrada')
+xlabel('Señal original')
 grid on, grid minor;
 
 
