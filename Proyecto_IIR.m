@@ -34,21 +34,23 @@ senalFiltrada = filter(bCoef, aCoef, s);
 % Espectro de la señal filtrada
 senalFiltradaEspectro = fftshift(fft(senalFiltrada));
 
-%---------------------------------------------------------------------------
-% Graficación
-%---------------------------------------------------------------------------
+%% Graficación
 
 % Respuesta en frecuencia del filtro pasa banda IIR
 figure(1);
-subplot(2,1,1);
+subplot(3,1,1);
 plot(w, abs(h), 'r')
 title('Filtro IIR');
 xlabel('Respuesta en frecuencia del filtro pasa banda IIR');
 grid on, grid minor;
 % Espectro de la señal filtrada
-subplot(2,1,2);
+subplot(3,1,2);
 plot(abs(senalFiltradaEspectro), 'g')
 xlabel('Espectro de la señal original filtrado');
+grid on, grid minor;
+subplot(3,1,3);
+plot(abs(S), 'g')
+xlabel('Espectro de la señal original');
 grid on, grid minor;
 
 % Sonido de la señal filtrada
