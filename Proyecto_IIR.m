@@ -13,11 +13,11 @@ clear;
 % Información e importación de la señal
 %---------------------------------------------------------------------------
 
-[s,fs]=audioread('Domini_Fil.wav');
+[s,fs] = audioread('Domini_Fil.wav');
 duracion = length(s)/fs;
 
 fc = [500/fs, 1000/fs]; % Frecuencias de paso normalizadas
-orden = 5; 
+orden = 5;
 
  % Función butter, recibe orden y vector con las frecuencias de paso
 [bCoef, aCoef] = butter(orden, fc, 'bandpass'); 
@@ -34,17 +34,25 @@ senalFiltrada = filter(bCoef, aCoef, s);
 % Espectro de la señal filtrada
 senalFiltradaEspectro = fftshift(fft(senalFiltrada));
 
-%% Graficación
+%---------------------------------------------------------------------------
+% Graficación
+%---------------------------------------------------------------------------
 
 % Respuesta en frecuencia del filtro pasa banda IIR
-figure();
+figure(1);
+subplot(2,1,1);
 plot(w, abs(h), 'r')
-
+title('Filtro IIR');
+xlabel('Respuesta en frecuencia del filtro pasa banda IIR');
+grid on, grid minor;
 % Espectro de la señal filtrada
-figure();
-plot(abs(senalFiltradaEspectro))
+subplot(2,1,2);
+plot(abs(senalFiltradaEspectro), 'g')
+xlabel('Espectro de la señal original filtrado');
+grid on, grid minor;
 
 % Sonido de la señal filtrada
 sound(senalFiltrada,fs)
 pause(duracion + 1);
 
+audiowrite('Audio IIR.wav',senalFiltrada,fs)
