@@ -9,11 +9,12 @@ clear;
 % Anahi Betzayda Martínez Hernández
 % Diego Cantoral González
 % Emanuel Martínez Felipe
+
 %---------------------------------------------------------------------------
 % Información e importación de la señal
 %---------------------------------------------------------------------------
 
-[s,fs]=audioread('Domini_Fil.wav');
+[s,fs] = audioread('Domini_Fil.wav');
 
 %    Canales = 1
 %    fs = 8000 = 8ksps frecuencia de muestreo
@@ -55,43 +56,53 @@ filtrado = desplazada .* S;
 senalFiltrada = ifft(fftshift(filtrado));
 senalFiltrada = real(senalFiltrada);
 
-%% Graficación
-
-% Señal original
-figure();
-plot(s)
-grid on, grid minor;
+%---------------------------------------------------------------------------
+% Graficación
+%---------------------------------------------------------------------------
 
 % Respuesta al impulso en frecuencia ideal
-figure();
-plot(fourier, H_k, 'g'); 
+figure(1);
+subplot(2,1,1);
+plot(fourier, H_k, 'r'); 
+title('Respuesta al impulso en frecuencia ideal')
+xlabel('Respuesta al impulso en frecuencia');
 grid on, grid minor;
-
 % Señal de los 64 coeficientes para el filtro
-figure();
-stem(fourierCoeficiente, abs(h_nCoeficientes));
+subplot(2,1,2);
+stem(fourierCoeficiente, abs(h_nCoeficientes), 'r');
+xlabel('Coeficientes 64 taps');
 grid on, grid minor;
 
 % Pasa bajos con el espectro de la señal original
 magnitudSenal = abs(S);
-figure();
+figure(2);
+subplot(2,1,1);
 plot(fourier, abs(desplazada), 'r')
+title('Filtrado');
 hold on;
-plot(fourier, magnitudSenal/max(magnitudSenal), 'b');
+plot(fourier, magnitudSenal/max(magnitudSenal), 'g');
+xlabel('Espectro de la señal original con filtro pasa banda');
 grid on, grid minor;
-
-% Espectro filtrado con filtro pasa bandas
+subplot(2,1,2);
 magnitudFiltrado = abs(filtrado);
-figure();
-plot(fourier, magnitudFiltrado/max(magnitudFiltrado));
+plot(fourier, magnitudFiltrado/max(magnitudFiltrado), 'g');
 hold on;
 plot(fourier, abs(desplazada), 'r')
+xlabel('Espectro de la señal original filtrada');
 grid on, grid minor;
 
-% Señal en el dominio del tiempo filtrada 
-figure();
-plot(fourier, senalFiltrada);
+% Comparación
+figure(3);
+subplot(2,1,1);
+plot(fourier, senalFiltrada, 'g');
+title('Comparación');
+xlabel('Señal original')
 grid on, grid minor;
+subplot(2,1,2);
+plot(s, 'g')
+xlabel('Señal filtrada')
+grid on, grid minor;
+
 
 % Sonido original 
 sound(s,fs);
@@ -101,4 +112,4 @@ pause(duracion + 1);
 sound(senalFiltrada, fs);
 pause(duracion + 1);
 
-audiowrite("Domini_Fil - copia.wav",senalFiltrada,fs)
+audiowrite("Audio FIR.wav",senalFiltrada,fs)
